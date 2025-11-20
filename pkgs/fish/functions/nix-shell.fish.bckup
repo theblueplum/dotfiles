@@ -1,0 +1,12 @@
+function nix-shell
+	if not command -q nix-shell
+		command nix-shell;
+		return $status;
+	end
+
+	set -l _argv $argv
+	argparse -i 'p/packages=' -- $argv
+	or command nix-shell -- $_argv
+
+	set -x FISH_NIX_PACKAGES
+end
