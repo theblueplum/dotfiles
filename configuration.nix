@@ -40,6 +40,7 @@ in
         xh
         jq
         fzf
+        ripgrep
 
         (fenix.stable.withComponents [
             "rustc"
