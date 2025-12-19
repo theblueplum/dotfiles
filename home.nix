@@ -24,14 +24,20 @@ in
         flameshot
         krita
         davinci-resolve
+        vscode
+        godot
 
-        btop
         neovim
+        btop
         xclip
         tree
         xh
         babelfish
         hyperfine
+        bat
+
+        typst
+        tinymist
 
         # required by spotify
         ffmpeg_4
