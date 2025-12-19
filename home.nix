@@ -86,9 +86,6 @@ in
     programs.git = {
         enable = true;
 
-        userName = "Anton";
-        userEmail = "aligator.h0spital.e@gmail.com";
-
         signing =
             if (env.git or { }) ? signingKey then
                 {
@@ -99,10 +96,34 @@ in
                 { signByDefault = false; };
 
         extraConfig = {
-            init.defaultBranch = "main";
-			push.autoSetupRemote = true;
+            user.name = "Anton";
+            user.email = "aligator.h0spital.e@gmail.com";
 
-            "url \"https://github.com/\"".insteadOf = "gh:";
+            color = {
+                status = "always";
+                branch = "always";
+                diff = "always";
+                interactive = "always";
+            };
+
+            init.defaultBranch = "main";
+            push.autoSetupRemote = true;
+
+            "filter \"lfs\"" = {
+                clean = "git-lfs clean -- %f";
+                smudge = "git-lfs smudge -- %f";
+                process = "git-lfs filter-process";
+
+                required = true;
+            };
+
+            "url \"ssh://git@github.com/\"".insteadOf = "gh:";
+            "url \"ssh://git@github.com/antonw51\"".insteadOf = "gh:me";
+
+            "url \"ssh://git@ip.louiscreates.com/\"".insteadOf = "tea:";
+            "url \"ssh://git@ip.louiscreates.com/antonw51\"".insteadOf = "tea:me";
+
+            alias.ref = "show -s --pretty = reference";
         };
     };
 
