@@ -8,7 +8,7 @@ let
     neovim = pkgs.callPackage ./pkgs/neovim/default.nix { };
     fish = pkgs.callPackage ./pkgs/fish/default.nix { };
 
-    env = import ./.env.nix;
+    env = import ./.env.nix { inherit pkgs; };
 
     home = /home/anton;
 in

@@ -56,8 +56,8 @@ in
         let
             background = lib.concatStringsSep " " [
                 "exec --no-startup-id"
-                "${lib.concatStringsSep " " [
-                    "${lib.getExe pkgs.xwinwrap}"
+                (lib.concatStringsSep " " [
+                    (lib.getExe pkgs.xwinwrap)
                     "-g 3820x1080"
                     "-s"
                     "-b"
@@ -65,10 +65,10 @@ in
                     "-sp"
                     "-ov"
                     "-nf"
-                ]}"
+                ])
                 "--"
-                "${lib.concatStringsSep " " [
-                    "${lib.getExe pkgs.mpv}"
+                (lib.concatStringsSep " " [
+                    (lib.getExe pkgs.mpv)
                     "${wallpaper}/wallpaper.mov"
                     "-wid WID"
                     "--loop"
@@ -81,7 +81,7 @@ in
                     "--framedrop=vo"
                     "--profile=low-latency"
                     "--hwdec=auto"
-                ]}"
+                ])
             ];
             displays =
                 if (env ? displays) then
@@ -89,6 +89,12 @@ in
                         "workspace 1 output ${env.displays.primary}"
                         (if (env.displays ? secondary) then "workspace 2 output ${env.displays.secondary}" else "")
                         "exec i3-msg focus output ${env.displays.primary}"
+                        (
+                            if (env.displays ? xrandr) then
+                                "exec \"${lib.getExe pkgs.xorg.xrandr} ${env.displays.xrandr}\""
+                            else
+                                ""
+                        )
                     ]
                 else
                     "";
