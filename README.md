@@ -1,3 +1,9 @@
+> [!NOTE]
+> This is the `legacy` branch, with _generic_ (`stow` based "hoist-upwards") 
+> configurations (be it dated) used with Arch. Personally, I use NixOS now, and 
+> those configuration files (alongside up-to-date configs for other things) are 
+> available on the `main` branch.
+
 # antonw51's dotfiles
 
 These are my personal configuration files as I use for Arch, i3, Neovim, Fish
