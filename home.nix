@@ -127,6 +127,8 @@ in
         };
     };
 
+	programs.vesktop = import ./home/vesktop.nix;
+
     services.gpg-agent = {
         enable = true;
         enableSshSupport = true;
