@@ -53,6 +53,9 @@ local keymap = {
 	goto_last_buffer = {
 		['<leader>l'] = ':e#<CR>',
 	},
+	goto_definition = {
+		['gd'] = vim.lsp.buf.declaration
+	},
 	scratch_pad = {
 		['<leader>s'] = table.concat({
 			':bo vs',
