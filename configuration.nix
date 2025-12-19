@@ -39,6 +39,7 @@ in
         git
         xh
         jq
+        fzf
 
         (fenix.stable.withComponents [
             "rustc"

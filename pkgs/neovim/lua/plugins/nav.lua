@@ -1,24 +1,32 @@
 local common = require('BluePlum.lazy')
-local telescope = {
+local fzf_lua = {
 	find_files = function()
-		require('telescope.builtin').find_files({ show_hidden = true })
+		require('fzf-lua').files()
 	end,
 	live_grep = function()
-		require('telescope.builtin').live_grep()
+		require('fzf-lua').grep()
 	end,
 	buffers = function()
-		require('telescope.builtin').buffers()
+		require('fzf-lua').buffers()
+	end,
+	quick_fix = function()
+		require('fzf-lua').lsp_code_actions()
+	end,
+	diagnostics = function()
+		require('fzf-lua').diagnostics_workspace()
 	end,
 }
 
 return {
 	{
-		'nvim-telescope/telescope.nvim',
-		dependencies = { common.plenary },
+		'ibhagwan/fzf-lua',
+		dependencies = { common.icons },
 		keys = {
-			{ '<leader>ff', telescope.find_files },
-			{ '<leader>fs', telescope.live_grep },
-			{ '<leader>bb', telescope.buffers },
+			{ '<leader>ff', fzf_lua.find_files },
+			{ '<leader>fs', fzf_lua.live_grep },
+			{ '<leader>fd', fzf_lua.diagnostics },
+			{ '<leader>bb', fzf_lua.buffers },
+			{ 'gra', fzf_lua.quick_fix },
 		},
 	},
 
