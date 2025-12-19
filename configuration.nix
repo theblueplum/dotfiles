@@ -40,7 +40,7 @@ in
         xh
         jq
 
-        (fenix.complete.withComponents [
+        (fenix.stable.withComponents [
             "rustc"
             "cargo"
             "clippy"
