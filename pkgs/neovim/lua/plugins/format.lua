@@ -24,7 +24,7 @@ local function formatter(exe, args)
 	}
 end
 
-local prettier = formatter('prettier', {
+local prettier = formatter('prettierd', {
 	'--config-precedence prefer-file',
 	'--single-quote',
 	'--use-tabs',

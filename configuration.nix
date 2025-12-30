@@ -50,7 +50,9 @@ in
             "rustfmt"
             "rust-analyzer"
         ])
-        nodejs-slim_latest
+        nodejs_latest
+        prettierd
+        typescript-language-server
         pnpm
         nixd
         nixfmt-rfc-style

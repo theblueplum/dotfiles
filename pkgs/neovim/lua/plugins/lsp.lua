@@ -11,11 +11,12 @@ return {
 
 			mason_lspconfig.setup(lazy.opts)
 			mason_lspconfig.setup_handlers({
-				vim.lsp.enable
+				vim.lsp.enable,
 			})
 
-			vim.lsp.enable('nixd')
-			vim.lsp.enable('rust_analyzer')
+			for _, lsp in pairs({ 'nixd', 'rust_analyzer', 'ts_ls' }) do
+				vim.lsp.enable(lsp)
+			end
 		end,
 		dependencies = {
 			'mason-org/mason.nvim',
@@ -51,11 +52,16 @@ return {
 				menu = {
 					auto_show = true,
 					draw = {
-						columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { 'kind' } },
+						columns = {
+							{ 'kind_icon' },
+							{ 'label', 'label_description', gap = 1 },
+							{ 'kind' },
+						},
 						components = {
 							kind_icon = {
 								text = function(ctx)
-									local icon, _, _ = common.icons_require().get('lsp', ctx.kind)
+									local icon, _, _ =
+										common.icons_require().get('lsp', ctx.kind)
 									return icon
 								end,
 							},
