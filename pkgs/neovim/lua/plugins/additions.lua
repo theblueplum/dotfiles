@@ -9,10 +9,14 @@ return {
 	{
 		'tpope/vim-fugitive',
 		cmd = { 'Git' },
+		enabled = false, -- prefer using a terminal buffer with unnest.nvim
 	},
 	{
 		dir = '~/dev/share.nvim/',
 		opts = {},
 		enabled = false,
+	},
+	{
+		'brianhuster/unnest.nvim',
 	},
 }
