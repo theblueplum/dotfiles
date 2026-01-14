@@ -8,18 +8,19 @@
 let
     stateVersion = "25.05";
     env = import ./.env.nix { inherit pkgs; };
+
+    mpkgs = import ./pkgs/default.nix {
+        config = {
+            system.stateVersion = stateVersion;
+        };
+    };
 in
 {
     imports = [
         # Include the results of the hardware scan.
         ./hardware-configuration.nix
         (import (./. + "/${env.hostname}.nix"))
-        (
-            let
-                home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${stateVersion}.tar.gz";
-            in
-            import "${home-manager}/nixos"
-        )
+        mpkgs.home-manager.module
     ];
 
     nixpkgs.config.allowUnfree = true;
@@ -59,6 +60,7 @@ in
         clang
         llvmPackages.bintools
         stylua
+        go
     ];
 
     fonts.packages = with pkgs; [
@@ -69,7 +71,7 @@ in
         nerd-fonts.symbols-only
         inter
         times-newer-roman
-        (import ./pkgs/monaco-font/default.nix { inherit pkgs; })
+        (mpkgs.font.monaco)
     ];
 
     fonts.fontconfig = {
@@ -153,9 +155,12 @@ in
         ];
     };
 
-    home-manager.useUserPackages = true;
-    home-manager.useGlobalPkgs = true;
-    home-manager.users.anton = import ./home.nix;
+    home-manager = {
+        useUserPackages = true;
+        useGlobalPkgs = true;
+        sharedModules = [ ] ++ (mpkgs.home-manager.sharedModules);
+        users.anton = import ./home.nix;
+    };
 
     # programs.home-manager.enable = true;
     programs.dconf.enable = true;
@@ -165,7 +170,15 @@ in
         style = "adwaita-dark";
     };
 
-    hardware.graphics.enable = true;
+    hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [
+            intel-media-driver
+            intel-vaapi-driver
+            libvdpau-va-gl
+            mesa
+        ];
+    };
 
     hardware.bluetooth = {
         enable = true;

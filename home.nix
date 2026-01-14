@@ -5,14 +5,16 @@
 }:
 
 let
-    neovim = pkgs.callPackage ./pkgs/neovim/default.nix { };
-    fish = pkgs.callPackage ./pkgs/fish/default.nix { };
+    mpkgs = import ./pkgs/default.nix { };
+    inherit (mpkgs.config) neovim fish;
 
     env = import ./.env.nix { inherit pkgs; };
 
     home = /home/anton;
 in
 {
+    imports = [ ];
+
     home.username = lib.mkDefault "anton";
     home.homeDirectory = lib.mkDefault home;
 
@@ -25,7 +27,7 @@ in
         krita
         davinci-resolve
         vscode
-        godot
+        godotPackages_4_5.godot
 
         neovim
         btop
@@ -133,7 +135,67 @@ in
         };
     };
 
-	programs.vesktop = import ./home/vesktop.nix;
+    programs.tetrio-desktop = {
+        enable = true;
+        package = mpkgs.tetrio.desktop;
+
+        plus = {
+            enable = true;
+            package = mpkgs.tetrio.plus;
+            skin.package = mpkgs.tetrio.skins.simple-connected;
+        };
+
+        settings = {
+            handling = {
+                auto_repeat_rate = 0;
+                delayed_auto_shift = 7;
+                soft_drop_factor = 14;
+            };
+            audio = {
+                scroll_adjust_volume = false;
+                stereo = 60;
+
+                music.preferences = {
+                    kaze-no-sanpomichi = "-";
+                    muscat-to-shiroi-osara = "-";
+                    akindo = "+";
+                    yoru-no-niji = "+";
+                    burari-tokyo = "+";
+                    fuyu-no-jinkoueisei = "+";
+                    honemi-ni-shimiiru-karasukaze = "-";
+                    "21seiki-no-hitobito" = "+";
+                    haru-wo-machinagara = "++";
+                    go-go-go-summer = "-";
+                    sasurai-no-hitoritabi = "++";
+                    wakana = "-";
+                    zange-no-ma = "-";
+                    asphalt = "-";
+                    madobe-no-hidamari = "--";
+                    sora-no-sakura = "-";
+                    suiu = "-";
+                    burning-heart = "+";
+                    hayate-no-sei = "-";
+                    ima-koso = "+";
+                    chiheisen-wo-koete = "--";
+                    moyase-toushi-yobisamase-tamashii = "-";
+                    uchuu-5239 = "+";
+                    ultra-super-heros = "-";
+                };
+            };
+            visual = {
+                board_bounciness = 20;
+                background_opacity = 0;
+            };
+            multiplayer.notifications.suppress_while_playing = true;
+
+            skip_login_screen = "by-url";
+            advertisments.i_support_the_devs.i_cannot_play_with_ads.and_i_really_want_to.disable = true;
+
+            devtools = true;
+        };
+    };
+
+    programs.vesktop = import ./home/vesktop.nix;
 
     services.gpg-agent = {
         enable = true;
@@ -157,5 +219,5 @@ in
         NIXPKGS_ALLOW_UNFREE = 1;
     };
 
-    home.stateVersion = (pkgs.callPackage <nixos-config> { }).system.stateVersion;
+    home.stateVersion = mpkgs.system.stateVersion;
 }
